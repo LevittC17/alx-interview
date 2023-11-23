@@ -14,9 +14,14 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
-    coins.sort(reverse=True)  # Sort coins in descending order
+    if not coins or None in coins:
+        return -1
 
-    # Initialize a list to store the minimum number of coins for each value
+    # Sort coins in descending order
+    coins.sort(reverse=True)
+
+    # Initialize a list to store the minimum number of coins
+    # for each value
     min_coins = [float('inf')] * (total + 1)
     min_coins[0] = 0
 
