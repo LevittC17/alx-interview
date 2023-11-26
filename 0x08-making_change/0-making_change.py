@@ -1,42 +1,36 @@
 #!/usr/bin/python3
+
 """
-Module for making change
+Module for Making Change
 """
 
 
 def makeChange(coins, total):
     """
     Given a pile of coins of different values,
-    determine the fewest number of coins needed to meet a given
-    amount total.
+    determine the fewest number of coins needed to meet a
+    given amount total
     """
-
-    if total <= 0:
+    # Check if the total is 0 or less
+    if (total <= 0):
         return 0
 
-    if not coins or None in coins:
+    # Handle the base cases: If there are no coins, or total is not possible
+    # with given coins
+    if not coins or min(coins) > total:
         return -1
 
-    # Sort coins in descending order
-    coins.sort(reverse=True)
+    # Initialize a table to score results
+    # (Hint: This can be a list where the index represents the total amount)
+    dp_table = [float('inf')] * (total + 1)
+    dp_table[0] = 0  # Base case: 0 coins needed for total of 0
 
-    # Initialize a list to store the minimum number of coins
-    # for each value
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0
-
-    # Iterate through each coin value
+    # Populate the table based on the base cases and state transition
     for coin in coins:
-        # Update the min_coins list for each value from coin to total
-        for value in range(coin, total + 1):
-            if coin > value:
-                # No need to continue if the coin is greater than the value
-                break
-            min_coins[value] = min(min_coins[value],
-                                   min_coins[value - coin] + 1)
+        for amount in range(coin, total + 1):
+            dp_table[amount] = min(
+                dp_table[amount], dp_table[amount - coin] + 1)
 
-    # If the value at total is still infinity, it means the total cannot be met
-    if min_coins[total] == float('inf'):
-        return -1
-
-    return min_coins[total]
+    # Return the result for the orginal total
+    # If it's not possible to make the change, return -1
+    return dp_table[total] if dp_table[total] != float('inf') else -1
