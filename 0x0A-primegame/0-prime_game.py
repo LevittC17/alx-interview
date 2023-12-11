@@ -4,6 +4,7 @@
 Primer Game
 """
 
+
 def isWinner(x, nums):
     """
     Determines the winner of each round of the prime game.
@@ -78,7 +79,7 @@ def isWinner(x, nums):
         remaining = list(range(1, n + 1))
 
         maria_turn = True
-        while primes:
+        while primes and any(prime <= max(remaining) for prime in primes):
             prime = primes.pop(0)
             if maria_turn:
                 ben_wins += 1
